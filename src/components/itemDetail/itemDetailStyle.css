@@ -1,0 +1,59 @@
+.main-detail-div{
+    min-height: 80vh;
+    padding: 1rem;
+  
+}
+.detail-img{
+    width: 100%;
+    border-bottom: 1px solid rgb(208, 208, 208);
+}
+.detail-img img {
+    width: 100%;
+}
+.datos-principales-SKU{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:justify;
+    padding: 1rem;
+   
+}
+.detalles-SKU{
+    text-align: justify;
+    padding: 1rem;
+
+}
+
+
+@media (min-width: 450px) {
+    
+    .main-detail-div{
+        display: flex;
+        min-height: 80vh;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+        min-height: 80vh;
+    }
+    .text-detail{
+        width: 60%;
+    }
+    .detail-img{
+        border: none;
+        width: 50%; 
+        margin-right: 2rem;       
+    }
+
+}
+
+@media (min-width: 726px) {
+    .text-detail{
+        width: 80%;
+    }
+    .detail-img{
+        margin-right: 4rem;       
+        margin-left: 2rem;       
+    }
+
+}

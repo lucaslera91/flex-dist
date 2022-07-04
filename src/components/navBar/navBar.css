@@ -1,0 +1,131 @@
+:root {
+    --main-bg-color: #FFFFFF;
+    --main-text-color: #000000;
+    --main-text-active-color: #D5A322;
+    --main-text-hover-color: whitesmoke;
+}
+.d5{
+    font-family: 'Raleway', sans-serif;
+    height: 100%;
+}
+.navbar-brand:hover{
+    color:var(--main-text-active-color)
+}
+.navbar-brand{
+    color: var(--main-text-color);
+    position: absolute;
+    left: 3%;
+    top:0.8rem;
+    z-index: 1;
+}
+.navBar {
+    min-width: 100%;
+    background-color: var(--main-bg-color);
+    color: var(--main-text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 8px 4px 4px #bec4c4;
+    
+}
+.navbar.navbar-expand-lg.navbar-light{
+    padding: 1rem;
+    min-width: 100%;
+    display: flex;
+}
+.navbar-toggler:focus{
+    outline: none;
+    box-shadow: none;  
+}
+.navbar-toggler:active{
+    outline: none;
+    box-shadow: none;
+}
+.navbar-toggler{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+    width: 2.5rem;
+    outline: none;
+    border: none;
+}
+.navbar-toggler:hover{
+    background-color: var(--main-text-active-color);
+    border-radius: 50%;
+}
+.fa-bars:hover {
+    transform:rotateZ(180deg);
+    transition: 0.3s ease-in;
+}
+/* .navbar-nav{
+    padding-top: 1rem;
+} */
+.logoContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.logoContainerDesktop{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    visibility: hidden;
+}
+ul {
+    padding: 0px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+li {
+    
+    list-style: none;
+    padding: 0px 20px;
+    
+}
+.link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    margin-top: 4vw;
+
+    
+}
+.link p{
+    margin: 0;
+}
+.link .d5{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.link:hover{
+    color: var(--main-text-active-color);
+    font-weight:900;
+}
+
+.active .d5{
+    font-weight: 600;
+    color: var(--main-text-active-color);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+@media (min-width: 992px) {
+
+    .link{
+        white-space: nowrap;
+        margin-left: 3.5vw;
+    }
+    .link{
+        margin-top: 0rem;
+    }
+    .navbar-brand{
+        top:0.20rem;
+        padding-top: 0.1rem;
+    }
+}

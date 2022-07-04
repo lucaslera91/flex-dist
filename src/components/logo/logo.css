@@ -1,0 +1,33 @@
+.main-logo{
+position: absolute;
+left: 3%;
+top:3%;
+}
+.outer-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+ 
+}
+@media (min-width: 992px) {
+    .outer-logo{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+     
+    }
+    .main-logo{
+        position: absolute;
+        left: 3%;
+        top:2%;
+        }
+  
+}

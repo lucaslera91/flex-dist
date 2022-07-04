@@ -1,0 +1,12 @@
+.main-footer-div{
+    background-color: rgb(15, 74, 92);
+    color: cornsilk;
+    padding: 1rem;
+}
+
+.iconos-redes{
+    padding: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+

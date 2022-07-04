@@ -1,0 +1,26 @@
+.filtro-space{
+    width: 100%;
+    border-bottom: 1px solid rgb(213, 211, 211);
+}
+
+.btn-filtro{
+    background-color: transparent;
+    border-radius: 25% 10%;
+    margin: 0.5rem;
+    border: 1px solid rgb(213, 211, 211);
+    padding: 5px 10px 5px 10px;   
+ }
+.btn-filtro:hover{
+   background-color: peru;
+   transition: 0.8s;
+}
+
+@media (min-width: 992px) {
+
+
+    .btn-filtro{
+        border: 1px solid rgb(213, 211, 211);
+       
+        white-space: nowrap;
+    }
+}
