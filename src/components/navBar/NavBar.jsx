@@ -37,13 +37,10 @@ function NavBar() {
                         <NavLink onClick={reset} className='link' to='/'>
                             <p className='d5'>HOME</p>
                         </NavLink>
-                        <NavLink onClick={reset} className='link' to='/conocenos'>
-                            <p className='d5' className='d5' >CONOCENOS</p>
-                        </NavLink>
                         <NavLink onClick={reset} className='link' to='/productos'>
                             <p className='d5' >PRODUCTOS</p>
                         </NavLink>
-                        <NavLink onClick={reset} className='link' to='/como_comprar'>
+                        <NavLink onClick={reset} className='link' to='/como-comprar'>
                             <p className='d5' >COMO COMPRAR</p>
                         </NavLink>
                         <NavLink onClick={reset} className='link' to='/contacto'>
