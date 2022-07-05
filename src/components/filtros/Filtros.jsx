@@ -1,10 +1,10 @@
 import React from 'react'
 import './filtro.css'
 
-const Filtros = ({ filtros }) => {
+const Filtros = ({ filtros, fn }) => {
     return (
         <div className='filtro-space'>
-            {filtros.map((filtro, idx) => <button key={idx} className='btn-filtro'>{filtro}</button>)}
+            {filtros.map((filtro, idx) => <button onClick={fn} key={idx} className='btn-filtro'>{filtro}</button>)}
         </div>
     )
 }
