@@ -43,6 +43,9 @@ function NavBar() {
                         <NavLink onClick={reset} className='link' to='/como-comprar'>
                             <p className='d5' >COMO COMPRAR</p>
                         </NavLink>
+                        <NavLink onClick={reset} className='link' to='/precios'>
+                            <p className='d5' >LISTA DE PRECIOS</p>
+                        </NavLink>
                         <NavLink onClick={reset} className='link' to='/contacto'>
                             <p className='d5' >CONTACTO</p>
                         </NavLink>

@@ -8,6 +8,7 @@ import Layout from './layout/Layout'
 import ComoComprarView from './views/ComoComprarView'
 import ContactoView from './views/ContactoView'
 import HomeView from './views/home/HomeView'
+import PreciosView from './views/PreciosView'
 
 const router = () => {
     return (
@@ -19,6 +20,7 @@ const router = () => {
                         <Route path="/productos" element={<ListaProductos />} />
                         <Route path="/detalle-producto" element={<ItemDetail />} />
                         <Route path="/como-comprar" element={<ComoComprarView />} />
+                        <Route path="/precios" element={<PreciosView />} />
                         <Route path="/contacto" element={<ContactoView />} />
                     </Route>
                 </Routes>
