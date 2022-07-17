@@ -1,0 +1,31 @@
+.iconoIconos{
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2C4545;
+    border-radius: 50%;
+}
+.iconoIconos p i {
+    height: 80%;
+    width: 80%;
+}
+
+.textIconos h6 {
+    font-family: 'Times New Roman';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+.textIconos p {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}

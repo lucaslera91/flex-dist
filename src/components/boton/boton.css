@@ -1,0 +1,17 @@
+.botonComponent {
+    background-color: rgba(213, 163, 34, 1);
+    border-radius: 5px;
+    /* height: 48px; */
+    width: fit-content;
+    border: none;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+}
+
+.botonComponent:hover {
+    background-color: rgba(213, 163, 34, .9);
+}

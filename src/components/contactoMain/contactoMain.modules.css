@@ -1,0 +1,52 @@
+.main-contacto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.redesContainer p {
+    font-family: 'Times New Roman';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #D5A322;
+}
+.redesIconos{
+    display: flex;
+}
+
+.redesIconos a {
+    color: #D5A322;
+
+}
+/* .redesIconos p i{
+    height: 40px;
+    width: 40px;
+} */
+
+
+@media (min-width: 760px) {
+    .main-contacto{
+        flex-direction: row-reverse;
+        justify-content: space-evenly;
+    }
+    /* .datosContactoContainer.col-12.col-md-4{
+        position: relative;
+        width: 400px;
+        background-color: pink;
+    } */
+    .img.col-12.col-md-4{
+        /* max-height: 150vh; */
+        min-height: 550px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .formContainer{
+        padding-left: 2rem
+    }
+
+     
+}
+
