@@ -10,7 +10,7 @@ const Layout = () => {
         <main>
             <NavBar />
             <Outlet />
-            <WhatsAppButton classnames={"botonWhatsApp"} width={"50px"}/>
+            <WhatsAppButton classnames={"botonWhatsApp"} size={"50px"}/>
             <Footer />
         </main>
     )
