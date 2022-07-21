@@ -8,6 +8,7 @@ import ComoComprarView from './views/ComoComprarView'
 import ContactoView from './views/contacto/ContactoView'
 import HomeView from './views/home/HomeView'
 import PreciosView from './views/PreciosView'
+import CargaDeDatos from './components/cargaDatos/CargaDeDatos'
 
 const router = () => {
     return (
@@ -21,6 +22,7 @@ const router = () => {
                         <Route path="/como-comprar" element={<ComoComprarView />} />
                         <Route path="/precios" element={<PreciosView />} />
                         <Route path="/contacto" element={<ContactoView />} />
+                        <Route path="/cargaDeDatos" element={<CargaDeDatos />} />
                     </Route>
                 </Routes>
             </ProductoProvider>

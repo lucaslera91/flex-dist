@@ -1,4 +1,6 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import { getDocs, collection, doc } from 'firebase/firestore'
+import { db } from '../firebase/firebase'
 import img1 from '../../src/recursos/imagenes/QuesoAzul-Emperador.png'
 import img2 from '../../src/recursos/imagenes/QuesoCrema-ElJuan.png'
 import img3 from '../../src/recursos/imagenes/Quesos-Pack1.png'
@@ -61,6 +63,53 @@ const ProductoProvider = ({ children }) => {
 
         },
     ]
+
+const [listas, setListas] = useState([])
+const [productos, setProductos] = useState([])
+
+const getListas = async () => {
+    const collRef = collection(db, 'listasProductos')
+    let listasTemp
+    await getDocs(collRef)
+    .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+            listasTemp = querySnapshot.docs.map(docSnapshot => {return {id: docSnapshot.id, docRef: docSnapshot.ref, ...docSnapshot.data()}}).sort((a, b) => a.creationDate - b.creationDate)
+            setListas(listasTemp)
+            console.log(`listasTemp => `, listasTemp)
+        } 
+        else {
+            listasTemp = []
+            setListas(listasTemp)
+        }
+    })
+    .catch(error => console.log(`Hubo un error en getListas => ${error}`))
+    return listasTemp
+}
+
+const getProductos = async () => {
+
+    const listasOrdenadas = await getListas()
+    const subCollRef = collection(listasOrdenadas[0].docRef, 'productos')
+
+    getDocs(subCollRef)
+    .then(querySnapshot => {
+        if (!querySnapshot.empty) {
+            const productosTemp = querySnapshot.docs.map(docSnapshot => {return {docId: docSnapshot.id, ...docSnapshot.data()}})
+            setProductos(productosTemp)
+            console.log(`productosTemp => `, productosTemp)
+        }
+        else {
+            setProductos([])
+        }
+    })
+    .catch(error => console.log(`Hubo un error en getProductos => ${error}`))
+}
+
+useEffect(
+    () => {
+        getProductos()
+    }, []
+)
 
 
     return (

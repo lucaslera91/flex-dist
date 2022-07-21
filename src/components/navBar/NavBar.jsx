@@ -58,6 +58,9 @@ function NavBar() {
                             <NavLink onClick={reset} className='link' to='/contacto'>
                                 <p className='d5' >CONTACTO</p>
                             </NavLink>
+                            <NavLink onClick={reset} className='link' to='/cargaDeDatos'>
+                                <p className='d5' >CARGAR</p>
+                            </NavLink>
                         </div>
                     </div>
                 </nav >
