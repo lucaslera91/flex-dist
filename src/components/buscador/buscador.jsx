@@ -8,17 +8,46 @@ import './buscador.modules.css'
 
 function Buscador({classes}) {
 
-const {productos} = ProductConsumer()
-const [results, setResults] = useState([])
-const onChangeHandler = (e) => {
-    e.preventDefault()
-    console.log("e => ", e)
-    let value = e.target.value
-    let resultsTemp
-    (value !== "") ? ( resultsTemp = productos.filter((obj, index) => {if (Object.values(obj).join(" ").includes(value)) {return obj}})) : (resultsTemp = [])
-    console.log("resultsTemp => ", resultsTemp)
-    setResults(resultsTemp)
-}
+    const {productos} = ProductConsumer()
+    const [results, setResults] = useState([])
+    const [show, setShow] = useState(false)
+
+    const onChangeHandler = (e) => {
+        e.preventDefault()
+        console.log("e => ", e)
+        let value = e.target.value.toLowerCase()
+        let valueStringsArray = value.split(" ")
+        console.log(`valueStringsArray => `, valueStringsArray)
+        let resultsTemp
+
+        (value !== "") ? 
+        ( resultsTemp = productos.filter((obj, index) => {
+            let objString = Object.values(obj).join(" ").toLowerCase()
+            function stringExists() {
+                let exists = true
+                valueStringsArray.forEach(string => {
+                    if (!(objString.includes(string)))
+                    {exists = false}
+                })
+                return exists      
+            }
+            if (stringExists()) {return obj}})) 
+        : (resultsTemp = [])
+        
+        console.log("resultsTemp => ", resultsTemp)
+        setResults(resultsTemp)
+    }
+
+    const onBlurHandler = (e) => {
+        e.preventDefault()
+        setShow(false)
+    }
+
+    const onFocusHandler = (e) => {
+        e.preventDefault()
+        setShow(true)
+    }
+
 
     return (
         <Form className={`buscador d-flex ${classes}`}>
@@ -28,9 +57,11 @@ const onChangeHandler = (e) => {
             className="me-2"
             aria-label="Search"
             onChange={onChangeHandler}
+            onFocus={onFocusHandler}
+            onBlur={onBlurHandler}
             />
             <Button variant="outline-secondary"><i className='fa-solid fa-magnifying-glass'></i></Button>
-            <ListGroup bsPrefix={`resultsListGroup ${results.length>0 ? 'd-block' : 'd-none'}`}>
+            <ListGroup bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
                 {results.length > 0 && results.map(item => {return <ListGroup.Item key={item.docId}>{item.NOMBRE}</ListGroup.Item>})}
             </ListGroup>
                     
