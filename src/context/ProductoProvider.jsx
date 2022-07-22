@@ -113,7 +113,7 @@ useEffect(
 
 
     return (
-        <ProductContext.Provider value={{ items }}>
+        <ProductContext.Provider value={{ items, listas, productos }}>
             {children}
         </ProductContext.Provider>
     )
