@@ -16,7 +16,7 @@ const Item = ({ producto }) => {
 
     return (
         <div >
-            <Link className='main-div-item' to={'/detalle-producto'} state={{ from: id }}>
+            <Link className='main-div-item' to={'/detalle-producto'} state={{itemId: id}}>
                 <div className='col-5'>
                     <img src={img} alt="" />
                 </div>

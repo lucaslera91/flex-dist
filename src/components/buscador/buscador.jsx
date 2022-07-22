@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Form, Button, ListGroup } from 'react-bootstrap'
 import { ProductConsumer } from '../../context/ProductoProvider'
 
@@ -40,7 +41,7 @@ function Buscador({classes}) {
 
     const onBlurHandler = (e) => {
         e.preventDefault()
-        setShow(false)
+        if (e.relatedTarget === null) {setShow(false)}
     }
 
     const onFocusHandler = (e) => {
@@ -50,7 +51,10 @@ function Buscador({classes}) {
 
 
     return (
-        <Form className={`buscador d-flex ${classes}`}>
+        <Form className={`buscador d-flex ${classes}`}
+        onFocus={onFocusHandler}
+        onBlur={onBlurHandler}
+        >
             <Form.Control
             type="search"
             placeholder="Buscar productos..."
@@ -62,7 +66,15 @@ function Buscador({classes}) {
             />
             <Button variant="outline-secondary"><i className='fa-solid fa-magnifying-glass'></i></Button>
             <ListGroup bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
-                {results.length > 0 && results.map(item => {return <ListGroup.Item key={item.docId}>{item.NOMBRE}</ListGroup.Item>})}
+
+                {results.length > 0 && results.map(item => {
+                return <ListGroup.Item key={item.docId}>
+                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }}>{item.NOMBRE}</Link>
+                </ListGroup.Item>
+                })
+                }
+           
+                {/* {results.length > 0 && results.map(item => {return <ListGroup.Item key={item.docId} action href="/detalle-producto" state={{ from: item.docId }}>{item.NOMBRE}</ListGroup.Item>})} */}
             </ListGroup>
                     
 

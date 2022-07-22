@@ -16,7 +16,7 @@ const ProductoProvider = ({ children }) => {
 
     const items = [
         {
-            id: 1,
+            id: '39SaRxWJ4BCtqLNZt8GY',
             sku: 'asdg824',
             imagen: 'img1',
             nombre: 'Acople Plastico',
@@ -27,7 +27,7 @@ const ProductoProvider = ({ children }) => {
             img: img1
         },
         {
-            id: 2,
+            id: "TS75rW2810INCjRMjNrp",
             sku: 'asdg824',
             imagen: 'img1',
             nombre: 'Acople Plastico',
@@ -39,7 +39,7 @@ const ProductoProvider = ({ children }) => {
 
         },
         {
-            id: 3,
+            id: "eaUyXb7L3B56G11cL1qa",
             sku: 'asdg824',
             imagen: 'img1',
             nombre: 'Acople Plastico',
@@ -49,19 +49,7 @@ const ProductoProvider = ({ children }) => {
             color: 'Rojo',
             img: img3
 
-        },
-        {
-            id: 4,
-            sku: 'asdg824',
-            imagen: 'img1',
-            nombre: 'Acople Plastico',
-            descripcion: 'Elemento para bordes y conexion de traba. No require soldar',
-            categoria: 'Accesorio',
-            medidas: '54cm',
-            color: 'Rojo',
-            img: img2
-
-        },
+        }
     ]
 
 const [listas, setListas] = useState([])

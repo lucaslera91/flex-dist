@@ -4,35 +4,35 @@ import { ProductConsumer } from '../../context/ProductoProvider';
 import './itemDetailStyle.css'
 
 const ItemDetail = () => {
-    const { items } = ProductConsumer();
+    // const { items } = ProductConsumer();
+    const { productos } = ProductConsumer();
     const location = useLocation()
-    const { from } = location.state
+    const { itemId } = location.state
 
-    const itemFind = items.filter(element => element.id === from)
-    console.log(itemFind)
+    console.log("itemId => ", itemId)
+    console.log("productos => ", productos)
+
+    const item = productos.find(obj => obj.docId === itemId)
+    console.log(item)
     return (
         <div>
-            {itemFind.map(element => {
-                return (
-                    <div key={element.id} className='main-detail-div'>
-                        <div className='detail-img'>
-                            <img src={element.img} alt="" />
-                        </div>
-                        <div className='text-detail'>
-                            <div className='datos-principales-SKU'>
-                                <h3>{element.nombre}</h3>
-                                <p>{element.descripcion}</p>
-                            </div>
-                            <div className='detalles-SKU'>
-                                <p>Categoria: {element.categoria}</p>
-                                <p>SKU: {element.sku}</p>
-                                <p>Dimesiones: {element.medidas}</p>
-                                <p>Color:{element.color}</p>
-                            </div>
-                        </div>
+            <div className='main-detail-div'>
+                <div className='detail-img'>
+                    <img src={item.FOTO} alt="foto del producto" />
+                </div>
+                <div className='text-detail'>
+                    <div className='datos-principales-SKU'>
+                        <h3>{item.NOMBRE}</h3>
+                        <p>{item.DESCPRIPCIÓN}</p>
                     </div>
-                )
-            })}
+                    <div className='detalles-SKU'>
+                        <p>Categoria: "..."</p>
+                        <p>SKU: {item.CODIGO}</p>
+                        <p>Dimesiones: "..."</p>
+                        <p>Color:{item.COLOR}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
