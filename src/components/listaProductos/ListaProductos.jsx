@@ -3,10 +3,12 @@ import { ProductConsumer } from "../../context/ProductoProvider";
 import { telasActions } from "../../store/telas-slice";
 import Item from "../item/Item";
 import Filtros from "../filtros/Filtros";
+import { useLocation } from "react-router-dom";
 import "./listaProductos.css";
 import { useDispatch, useSelector } from "react-redux";
 
 const ListaProductos = () => {
+
   const { items } = ProductConsumer();
   const dispatch = useDispatch();
   const arrayFiltros = ["accesorios", "telas", "roller", "repuestos"];
@@ -15,6 +17,13 @@ const ListaProductos = () => {
   const test = () => {
     dispatch(telasActions.productos());
   };
+
+  const location = useLocation()
+  let query
+  location.state && (query = location.state.query)
+  console.log("locatiosn.state => ", location.state)
+  console.log("query en ListaProductos => ", query)
+
   return (
     <div className="main-product-list-div mx-auto">
       <h3 onClick={test}>Redux test - click to remove list</h3>

@@ -7,15 +7,18 @@ const ItemDetail = () => {
     // const { items } = ProductConsumer();
     const { productos } = ProductConsumer();
     const location = useLocation()
-    const { itemId } = location.state
+    let itemId
+    location.state &&  (itemId = location.state.itemId) 
 
     console.log("itemId => ", itemId)
     console.log("productos => ", productos)
 
-    const item = productos.find(obj => obj.docId === itemId)
+    let item 
+    itemId && (item = productos.find(obj => obj.docId === itemId))
     console.log(item)
     return (
         <div>
+            { itemId ?
             <div className='main-detail-div'>
                 <div className='detail-img'>
                     <img src={item.FOTO} alt="foto del producto" />
@@ -32,8 +35,15 @@ const ItemDetail = () => {
                         <p>Color:{item.COLOR}</p>
                     </div>
                 </div>
-            </div>
+            </div> :
+            <div> 
+                <h2>Página no encontrada</h2>
+                <h3>Selleciona un producto para ver sus detalles</h3>
+            </div> }
         </div>
+
+
+        
     )
 }
 

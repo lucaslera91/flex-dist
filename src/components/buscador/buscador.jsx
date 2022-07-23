@@ -12,13 +12,15 @@ function Buscador({classes}) {
     const {productos} = ProductConsumer()
     const [results, setResults] = useState([])
     const [show, setShow] = useState(false)
+    const [valueStringsArray, setValueStringsArray] = useState([])
 
     const onChangeHandler = (e) => {
         e.preventDefault()
         console.log("e => ", e)
         let value = e.target.value.toLowerCase()
-        let valueStringsArray = value.split(" ")
-        console.log(`valueStringsArray => `, valueStringsArray)
+        const valueStringsArrayTemp = value.split(" ")
+        setValueStringsArray(valueStringsArrayTemp)
+        console.log(`valueStringsArrayTemp => `, valueStringsArrayTemp)
         let resultsTemp
 
         (value !== "") ? 
@@ -64,12 +66,12 @@ function Buscador({classes}) {
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}
             />
-            <Button variant="outline-secondary"><i className='fa-solid fa-magnifying-glass'></i></Button>
+            <Button variant="outline-secondary"><Link to={'/productos'} state={{ query: valueStringsArray }}><i className='fa-solid fa-magnifying-glass'></i></Link></Button>
             <ListGroup bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
 
                 {results.length > 0 && results.map(item => {
                 return <ListGroup.Item key={item.docId}>
-                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }}>{item.NOMBRE}</Link>
+                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }}> {item.NOMBRE} </Link>
                 </ListGroup.Item>
                 })
                 }
