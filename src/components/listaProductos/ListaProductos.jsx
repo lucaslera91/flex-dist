@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ListaProductos = () => {
 
-  const { items } = ProductConsumer();
+  // const { items } = ProductConsumer();
   const dispatch = useDispatch();
   const arrayFiltros = ["accesorios", "telas", "roller", "repuestos"];
   const dataTest = useSelector((state) => state.telas.test);
@@ -19,11 +19,17 @@ const ListaProductos = () => {
   };
 
   const location = useLocation()
-  let query
-  location.state && (query = location.state.query)
+  let queryResults
+  location.state && (queryResults = location.state.queryResults)
   console.log("locatiosn.state => ", location.state)
-  console.log("query en ListaProductos => ", query)
+  console.log("query en ListaProductos => ", queryResults)
 
+  const { productos } = ProductConsumer()
+
+
+  let productsToShow
+  (queryResults) ? (productsToShow = queryResults) : (productsToShow = productos)
+  console.log(productsToShow)
   return (
     <div className="main-product-list-div mx-auto">
       <h3 onClick={test}>Redux test - click to remove list</h3>
@@ -35,9 +41,11 @@ const ListaProductos = () => {
               <Filtros fn={test} filtros={arrayFiltros} />
             </div>
             <div>
-              {items.map((element) => (
-                <Item key={element.id} producto={element} />
-              ))}
+              {productsToShow.length > 0 ?
+              productsToShow.map((element) => {
+                return <Item key={element.docId} producto={element} />
+              })
+            : <h2>No se encontraron productos, prueba buscar diferente</h2>}
             </div>
           </>
         )}

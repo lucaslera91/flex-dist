@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import './itemStyle.css'
 const Item = ({ producto }) => {
-    const { id, nombre, img, descripcion, color, medidas, categoria } = producto
+    // const { id, nombre, img, descripcion, color, medidas, categoria } = producto
 
     // id: 1,
     // sku: 'asdg824',
@@ -16,16 +16,16 @@ const Item = ({ producto }) => {
 
     return (
         <div >
-            <Link className='main-div-item' to={'/detalle-producto'} state={{itemId: id}}>
+            <Link className='main-div-item' to={'/detalle-producto'} state={{itemId: producto.docId}}>
                 <div className='col-5'>
-                    <img src={img} alt="" />
+                    <img src={producto.FOTO} alt="foto del producto" />
                 </div>
                 <div className='col-7'>
-                    <h5>{nombre}</h5>
-                    <p>{descripcion}</p>
+                    <h5>Nombre: {producto.NOMBRE}</h5>
+                    <p>Descripción: {producto.DESCRIPCIÓN}</p>
                     <div>
-                        <p>{color}</p>
-                        <p>{categoria}</p>
+                        <p>Color: {producto.COLOR}</p>
+                        <p>Categoría: {producto.categoria}</p>
 
                     </div>
                 </div>

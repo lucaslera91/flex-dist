@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Form, Button, ListGroup } from 'react-bootstrap'
 import { ProductConsumer } from '../../context/ProductoProvider'
@@ -9,9 +9,11 @@ import './buscador.modules.css'
 
 function Buscador({classes}) {
 
+    const listGroupRef = useRef()
     const {productos} = ProductConsumer()
     const [results, setResults] = useState([])
     const [show, setShow] = useState(false)
+    const [hasValue, setHasValue] = useState(false)
     const [valueStringsArray, setValueStringsArray] = useState([])
 
     const onChangeHandler = (e) => {
@@ -23,20 +25,25 @@ function Buscador({classes}) {
         console.log(`valueStringsArrayTemp => `, valueStringsArrayTemp)
         let resultsTemp
 
-        (value !== "") ? 
-        ( resultsTemp = productos.filter((obj, index) => {
+        if ((value !== "") && (valueStringsArrayTemp.find(str => {if (str !== " ") {return str}}))) 
+        {   setHasValue(true)
+            resultsTemp = productos.filter((obj, index) => {
             let objString = Object.values(obj).join(" ").toLowerCase()
             function stringExists() {
                 let exists = true
-                valueStringsArray.forEach(string => {
+                valueStringsArrayTemp.forEach(string => {
                     if (!(objString.includes(string)))
                     {exists = false}
                 })
                 return exists      
             }
-            if (stringExists()) {return obj}})) 
-        : (resultsTemp = [])
-        
+            if (stringExists()) {return obj}})
+        } 
+        else 
+        {
+            setHasValue(false)
+            resultsTemp = []
+        }
         console.log("resultsTemp => ", resultsTemp)
         setResults(resultsTemp)
     }
@@ -66,12 +73,13 @@ function Buscador({classes}) {
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}
             />
-            <Button variant="outline-secondary"><Link to={'/productos'} state={{ query: valueStringsArray }}><i className='fa-solid fa-magnifying-glass'></i></Link></Button>
-            <ListGroup bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
 
+            <Button variant="outline-secondary" className={`${!hasValue && 'disabledLink'}`}><Link to={'/productos'} state={{ queryResults: results }} onClick={() => setShow(false)}><i className='fa-solid fa-magnifying-glass'></i></Link></Button>
+
+            <ListGroup ref={listGroupRef} bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
                 {results.length > 0 && results.map(item => {
                 return <ListGroup.Item key={item.docId}>
-                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }}> {item.NOMBRE} </Link>
+                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }} onClick={() => setShow(false)}> {item.NOMBRE} </Link>
                 </ListGroup.Item>
                 })
                 }

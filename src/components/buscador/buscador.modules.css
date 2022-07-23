@@ -9,3 +9,6 @@
 .buscador {
     position: relative;
 }
+.disabledLink {
+    pointer-events: none;
+}

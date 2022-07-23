@@ -57,26 +57,29 @@ const [productos, setProductos] = useState([])
 
 const getListas = async () => {
     const collRef = collection(db, 'listasProductos')
+    let listasTempOrdenadas
     let listasTemp
     await getDocs(collRef)
     .then((querySnapshot) => {
         if (!querySnapshot.empty) {
-            listasTemp = querySnapshot.docs.map(docSnapshot => {return {id: docSnapshot.id, docRef: docSnapshot.ref, ...docSnapshot.data()}}).sort((a, b) => a.creationDate - b.creationDate)
-            setListas(listasTemp)
-            console.log(`listasTemp => `, listasTemp)
+            listasTemp = querySnapshot.docs.map(docSnapshot => {return {id: docSnapshot.id, docRef: docSnapshot.ref, ...docSnapshot.data()}})
+            listasTempOrdenadas = listasTemp.sort((a, b) => {return ((new Date(b.creationTime).getTime()) - (new Date(a.creationTime).getTime()))})
+            setListas(listasTempOrdenadas)
+
         } 
         else {
-            listasTemp = []
-            setListas(listasTemp)
+            listasTempOrdenadas = []
+            setListas(listasTempOrdenadas)
         }
     })
     .catch(error => console.log(`Hubo un error en getListas => ${error}`))
-    return listasTemp
+    return listasTempOrdenadas
 }
 
 const getProductos = async () => {
 
     const listasOrdenadas = await getListas()
+    console.log(`listasOrdenadas => `, listasOrdenadas)
     const subCollRef = collection(listasOrdenadas[0].docRef, 'productos')
 
     getDocs(subCollRef)
