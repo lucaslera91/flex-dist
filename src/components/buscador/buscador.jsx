@@ -63,6 +63,7 @@ function Buscador({classes}) {
         <Form className={`buscador d-flex ${classes}`}
         onFocus={onFocusHandler}
         onBlur={onBlurHandler}
+        onSubmit={(e) => e.preventDefault()} // cambiarla por algo mejor
         >
             <Form.Control
             type="search"
@@ -81,14 +82,8 @@ function Buscador({classes}) {
                 return <ListGroup.Item key={item.docId}>
                     <Link to={'/detalle-producto'} state={{ itemId: item.docId }} onClick={() => setShow(false)}> {item.NOMBRE} </Link>
                 </ListGroup.Item>
-                })
-                }
-           
-                {/* {results.length > 0 && results.map(item => {return <ListGroup.Item key={item.docId} action href="/detalle-producto" state={{ from: item.docId }}>{item.NOMBRE}</ListGroup.Item>})} */}
+                })}          
             </ListGroup>
-                    
-
-
         </Form>
 
     )

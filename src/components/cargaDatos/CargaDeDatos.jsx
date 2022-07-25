@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { getDoc, collection, doc, addDoc } from 'firebase/firestore';
 import { listAll, ref, getDownloadURL } from 'firebase/storage';
@@ -53,32 +53,40 @@ const CargaDeDatos = () => {
 
 
     }
+    const [imgUrl, setImgUrl] = useState("../../recursos/imagenes/QuesoAzul-Emperador.png")
 
     // storage 
-    const getAllRefFromFolder = (e) => {
-        e.preventDefault()
-        const folderRef = ref(storage, '/TELAS')
-        listAll(folderRef)
-        .then(res => {
-            res.items.forEach(itemRef => {
-                getDownloadURL(itemRef)
-                .then(url => {
-                    console.log("downloadURL => ", url)
 
-                        // This can be downloaded directly:
-                        const xhr = new XMLHttpRequest();
-                        xhr.responseType = 'blob';
-                        xhr.onload = (event) => {
-                        const blob = xhr.response;
-                        };
-                        xhr.open('GET', url);
-                        xhr.send();
-                })
-                .catch(error => console.log("Error => ", error))
-            })
-        })
-        .catch(error => console.log("Error => ", error))
-    } 
+
+
+
+
+    // This can be downloaded directly:
+    // const xhr = new XMLHttpRequest();
+    // xhr.responseType = 'blob';
+    // xhr.onload = (event) => {
+    // const blob = xhr.response;
+    // };
+    // xhr.open('GET', url);
+    // xhr.send();
+
+    // fetch(url)
+    // .then(function(response) {
+    //     console.log("response => ",response)
+    //     if(response.ok) {
+    //       response.blob()
+    //       .then(function(miBlob) {
+    //         var objectURL = URL.createObjectURL(miBlob);
+    //         setImgUrl(objectURL);
+    //       })
+    //       .catch(error => console.log("Hubo un error con response.blob => ", error))
+    //     } else {
+    //       console.log('Respuesta de red OK pero respuesta HTTP no OK');
+    //     }
+    //   })
+    // .catch(function(error) {
+    // console.log('Hubo un problema con la petición Fetch:' + error.message);
+    // });
 
     // async function downloadImage(imageSrc) {
     //     const image = await fetch(imageSrc)
@@ -112,10 +120,11 @@ const CargaDeDatos = () => {
                 <Button variant="outline-secondary" type="submit" onClick={()=>{}}>
                 Cargar imágenes
                 </Button>
-                <Button variant="outline-secondary" type="submit" onClick={getAllRefFromFolder}>
+                <Button variant="outline-secondary" type="submit" onClick={()=>{}}>
                 Descargar imágenes
                 </Button>
             </Form>
+
         </div>
 
       

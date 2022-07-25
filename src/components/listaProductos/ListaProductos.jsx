@@ -6,9 +6,12 @@ import Filtros from "../filtros/Filtros";
 import { useLocation } from "react-router-dom";
 import "./listaProductos.css";
 import { useDispatch, useSelector } from "react-redux";
+import { storage } from "../../firebase/firebase";
+import { ref, getDownloadURL } from 'firebase/storage';
 
 const ListaProductos = () => {
 
+  const { productos } = ProductConsumer()
   // const { items } = ProductConsumer();
   const dispatch = useDispatch();
   const arrayFiltros = ["accesorios", "telas", "roller", "repuestos"];
@@ -24,19 +27,19 @@ const ListaProductos = () => {
   console.log("locatiosn.state => ", location.state)
   console.log("query en ListaProductos => ", queryResults)
 
-  const { productos } = ProductConsumer()
-
-
   let productsToShow
   (queryResults) ? (productsToShow = queryResults) : (productsToShow = productos)
-  console.log(productsToShow)
+
+
+
+
   return (
     <div className="main-product-list-div mx-auto">
       <h3 onClick={test}>Redux test - click to remove list</h3>
-      <h3>
+      <div>
         {dataTest && (
           <>
-            <h3>Lista de productos</h3>
+            <h5>Lista de productos</h5>
             <div className="dist-filtros">
               <Filtros fn={test} filtros={arrayFiltros} />
             </div>
@@ -45,11 +48,11 @@ const ListaProductos = () => {
               productsToShow.map((element) => {
                 return <Item key={element.docId} producto={element} />
               })
-            : <h2>No se encontraron productos, prueba buscar diferente</h2>}
+            : <h5>No se encontraron productos, prueba buscar diferente</h5>}
             </div>
           </>
         )}
-      </h3>
+      </div>
     </div>
   );
 };

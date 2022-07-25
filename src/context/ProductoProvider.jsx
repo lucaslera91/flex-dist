@@ -1,12 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { getDocs, collection, doc } from 'firebase/firestore'
-import { db } from '../firebase/firebase'
-import img1 from '../../src/recursos/imagenes/QuesoAzul-Emperador.png'
-import img2 from '../../src/recursos/imagenes/QuesoCrema-ElJuan.png'
-import img3 from '../../src/recursos/imagenes/Quesos-Pack1.png'
-import img4 from '../../src/recursos/imagenes/QuesoProvoletaPack-Puyehue.png'
-import img5 from '../../src/recursos/imagenes/QuesoPortSalut-El Juan.png'
-import img6 from '../../src/recursos/imagenes/QuesoHolanda.png'
+import { ref, listAll, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../firebase/firebase'
 
 const ProductContext = createContext();
 
@@ -14,47 +9,11 @@ export const ProductConsumer = () => useContext(ProductContext);
 
 const ProductoProvider = ({ children }) => {
 
-    const items = [
-        {
-            id: '39SaRxWJ4BCtqLNZt8GY',
-            sku: 'asdg824',
-            imagen: 'img1',
-            nombre: 'Acople Plastico',
-            descripcion: 'Elemento para bordes y conexion de traba. No require soldar',
-            categoria: 'Accesorio',
-            medidas: '54cm',
-            color: 'Rojo',
-            img: img1
-        },
-        {
-            id: "TS75rW2810INCjRMjNrp",
-            sku: 'asdg824',
-            imagen: 'img1',
-            nombre: 'Acople Plastico',
-            descripcion: 'Elemento para bordes y conexion de traba. No require soldar',
-            categoria: 'Accesorio',
-            medidas: '54cm',
-            color: 'Rojo',
-            img: img4
-
-        },
-        {
-            id: "eaUyXb7L3B56G11cL1qa",
-            sku: 'asdg824',
-            imagen: 'img1',
-            nombre: 'Acople Plastico',
-            descripcion: 'Elemento para bordes y conexion de traba. No require soldar',
-            categoria: 'Accesorio',
-            medidas: '54cm',
-            color: 'Rojo',
-            img: img3
-
-        }
-    ]
-
 const [listas, setListas] = useState([])
 const [productos, setProductos] = useState([])
+const [imgUrls, setImgUrls] = useState([])
 
+// obtenemos las listas de productos ordenadas por fechas (la más nueva es index 0)
 const getListas = async () => {
     const collRef = collection(db, 'listasProductos')
     let listasTempOrdenadas
@@ -65,7 +24,6 @@ const getListas = async () => {
             listasTemp = querySnapshot.docs.map(docSnapshot => {return {id: docSnapshot.id, docRef: docSnapshot.ref, ...docSnapshot.data()}})
             listasTempOrdenadas = listasTemp.sort((a, b) => {return ((new Date(b.creationTime).getTime()) - (new Date(a.creationTime).getTime()))})
             setListas(listasTempOrdenadas)
-
         } 
         else {
             listasTempOrdenadas = []
@@ -76,16 +34,27 @@ const getListas = async () => {
     return listasTempOrdenadas
 }
 
+// obtenemos los productos de la lista más nueva
 const getProductos = async () => {
 
+    // getLists
     const listasOrdenadas = await getListas()
     console.log(`listasOrdenadas => `, listasOrdenadas)
+    // getImgsUrl
+    const imgUrls = await getImgsUrl()
+    console.log("imgUrls => ", imgUrls)
+    // getProductos de la lista más actual
     const subCollRef = collection(listasOrdenadas[0].docRef, 'productos')
-
     getDocs(subCollRef)
     .then(querySnapshot => {
         if (!querySnapshot.empty) {
-            const productosTemp = querySnapshot.docs.map(docSnapshot => {return {docId: docSnapshot.id, ...docSnapshot.data()}})
+            const productosTemp = querySnapshot.docs.map(docSnapshot => {
+                const docData = docSnapshot.data()
+                const codigo = docData.CODIGO.replaceAll('-','')
+                const imgUrl = ((imgUrls.find(obj => obj.imgName === codigo) ? (imgUrls.find(obj => obj.imgName === codigo).url) : ""))
+
+                return {docId: docSnapshot.id, imgUrl, ...docData}
+            })
             setProductos(productosTemp)
             console.log(`productosTemp => `, productosTemp)
         }
@@ -93,8 +62,92 @@ const getProductos = async () => {
             setProductos([])
         }
     })
-    .catch(error => console.log(`Hubo un error en getProductos => ${error}`))
+    .catch(error => console.log(`Hubo un error en getProductos => `,error))
 }
+
+// obtenemos las url de las fotos
+
+    const getImgsUrl = async () => {
+        const telasRef = ref(storage, '/TELAS')
+        const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
+        let allRefs = []
+
+        await listAll(telasRef)
+            .then(res => allRefs.push(...res.items))
+            .catch(error => console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`))
+
+        await listAll(sistemasRef)
+            .then(res => allRefs.push(...res.items))
+            .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+
+        const imgUrlsTemp = await Promise.all(
+            allRefs.map(async ref => {
+                let url 
+                await getDownloadURL(ref).then(imgUrl => url = imgUrl).catch(error => console.log(`error obtniendo imgUrl => `, error))
+                let imgName = ref.name.slice(0,-4)
+                let obj = {imgName, url, ref}
+                return obj
+        }))
+
+        return imgUrlsTemp
+    }
+
+    // const getImgsUrl = async () => {
+    //     const telasRef = ref(storage, '/TELAS')
+    //     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
+    //     let imgUrlsTemp = []
+
+    //     await listAll(telasRef)
+    //     .then(refs => {
+    //         imgUrlsTemp.push(...res.items)})
+    //     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
+
+    //     await listAll(sistemasRef)
+    //     .then(res => imgUrlsTemp.push(...res.items))
+    //     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+
+    //     setImgUrls(imgUrlsTemp)
+
+    //     return imgUrlsTemp
+    // }
+
+//     const getImgsUrl = async (categoria, nombre) => {
+//     const ref = ref(storage, `/${categoria}/${nombre}.jpg`)
+//     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
+//     let imgUrlsTemp = []
+
+//     await listAll(telasRef)
+//     .then(res => {imgUrlsTemp.push(...res.items)})
+//     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
+
+//     await listAll(sistemasRef)
+//     .then(res => imgUrlsTemp.push(...res.items))
+//     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+
+//     setImgUrls(imgUrlsTemp)
+
+//     return imgUrlsTemp
+// }
+
+
+    // const getAllRefFromFolder = (e) => {
+    //     e.preventDefault()
+    //     const folderRef = ref(storage, '/fotos')
+    //     listAll(folderRef)
+    //     .then(res => {
+    //         res.items.forEach(itemRef => {
+    //             getDownloadURL(itemRef)
+    //             .then(url => {
+    //                 console.log("downloadUrl => ", url)
+    //                 setImgUrl(url)
+    //                 imgRef.current.src=url
+    //                 console.log(imgRef.current)
+    //             })
+    //             .catch(error => console.log("Error => ", error))
+    //         })
+    //     })
+    //     .catch(error => console.log("Error => ", error))
+    // } 
 
 useEffect(
     () => {
@@ -104,7 +157,7 @@ useEffect(
 
 
     return (
-        <ProductContext.Provider value={{ items, listas, productos }}>
+        <ProductContext.Provider value={{ listas, productos }}>
             {children}
         </ProductContext.Provider>
     )
