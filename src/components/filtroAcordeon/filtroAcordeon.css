@@ -1,0 +1,18 @@
+:root {
+    --acordion-bg-color: #283333;
+    --acordion-text-color: #FFFFFF;
+    --acordion-text-active-color: #D5A322;
+    --acordion-text-hover-color: whitesmoke;
+}
+.accordion{
+    display: flex;
+    justify-content: center;
+}
+.accordion-item{
+    border: 0;
+    border-bottom: 1px solid var(--acordion-text-active-color);
+    width: 95%;
+}
+.accordion-header{
+    color: var(--acordion-text-active-color);
+}

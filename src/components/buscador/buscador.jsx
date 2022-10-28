@@ -14,12 +14,15 @@ function Buscador({classes}) {
     const [results, setResults] = useState([])
     const [show, setShow] = useState(false)
     const [hasValue, setHasValue] = useState(false)
+    const [queryString, setQueryString] = useState()
     const [valueStringsArray, setValueStringsArray] = useState([])
-
+    console.log("queryString => ", queryString)
+    
     const onChangeHandler = (e) => {
         e.preventDefault()
         console.log("e => ", e)
         let value = e.target.value.toLowerCase()
+        setQueryString(value)
         const valueStringsArrayTemp = value.split(" ")
         setValueStringsArray(valueStringsArrayTemp)
         console.log(`valueStringsArrayTemp => `, valueStringsArrayTemp)
@@ -75,7 +78,7 @@ function Buscador({classes}) {
             onBlur={onBlurHandler}
             />
 
-            <Button variant="outline-secondary" className={`${!hasValue && 'disabledLink'}`}><Link to={'/productos'} state={{ queryResults: results }} onClick={() => setShow(false)}><i className='fa-solid fa-magnifying-glass'></i></Link></Button>
+            <Button variant="outline-secondary" className={`${!hasValue && 'disabledLink'}`}><Link to={'/productos'} state={{ queryResults: results, queryString: queryString}} onClick={() => setShow(false)}><i className='fa-solid fa-magnifying-glass'></i></Link></Button>
 
             <ListGroup ref={listGroupRef} bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
                 {results.length > 0 && results.map(item => {

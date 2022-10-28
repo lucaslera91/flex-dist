@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
 import ItemDetail from './components/itemDetail/ItemDetail'
-import ListaProductos from './components/listaProductos/ListaProductos'
+import ListaProductosView from './views/listadoProductos/ListaProductosView'
 import ProductoProvider from './context/ProductoProvider'
 import Layout from './layout/Layout'
 import ComoComprarView from './views/ComoComprarView'
@@ -17,7 +17,7 @@ const router = () => {
                 <Routes>
                     <Route element={<Layout />}>
                         <Route exact path="/" element={<HomeView />} />
-                        <Route path="/productos" element={<ListaProductos />} />
+                        <Route path="/productos" element={<ListaProductosView />} />
                         <Route path="/detalle-producto" element={<ItemDetail />} />
                         <Route path="/como-comprar" element={<ComoComprarView />} />
                         <Route path="/precios" element={<PreciosView />} />
