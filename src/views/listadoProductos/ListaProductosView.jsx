@@ -10,8 +10,8 @@ const ListaProductosView = () => {
 
     const { productos } = ProductConsumer()
     const [itemsToShow, setItemsToShow] = useState([])
-    console.log("Length => ", itemsToShow.length)
-    console.log("Productos => ", productos)
+    //console.log("Length => ", itemsToShow.length)
+    //console.log("Productos => ", productos)
     const location = useLocation()
     let queryString
     // let itemsToShow
@@ -20,8 +20,8 @@ const ListaProductosView = () => {
         queryResults = location.state.queryResults; 
         queryString = location.state.queryString
     }
-    console.log("location.state => ", location.state)
-    console.log("queryResults => ", queryResults)
+    //console.log("location.state => ", location.state)
+    //console.log("queryResults => ", queryResults)
 
     const handleFilter = (e) => {
         //console.log(e.target.value)
@@ -38,7 +38,7 @@ const ListaProductosView = () => {
    
     
 
-    console.log("Items to show => ", itemsToShow)
+    //console.log("Items to show => ", itemsToShow)
     return (
         <div>
             <ListaProductos itemsToShow={itemsToShow} queryString={queryString} handleFilter={handleFilter}/>

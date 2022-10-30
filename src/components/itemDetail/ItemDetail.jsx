@@ -21,7 +21,7 @@ const ItemDetail = () => {
             { itemId ?
             <div className='main-detail-div'>
                 <div className='detail-img'>
-                    <img src={item.FOTO} alt="foto del producto" />
+                    <img src={item.FOTO} alt="No se encontro imagen" />
                 </div>
                 <div className='text-detail'>
                     <div className='datos-principales-SKU'>

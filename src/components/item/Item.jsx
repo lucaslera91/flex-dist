@@ -18,7 +18,7 @@ const Item = ({ producto }) => {
         <div >
             <Link className='main-div-item' to={'/detalle-producto'} state={{itemId: producto.docId}}>
                 <div className='col-5'>
-                    <img src={producto.imgUrl} alt="foto del producto" />
+                    <img src={producto.imgUrl} alt="No se encontro imagen" />
                 </div>
                 <div className='col-7'>
                     <h5>Nombre: {producto.NOMBRE}</h5>

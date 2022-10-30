@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
-import { getDocs, collection, doc } from "firebase/firestore";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
+import { getDocs, collection, doc, limit } from "firebase/firestore";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { db, storage } from "../firebase/firebase";
 
@@ -15,6 +21,7 @@ const ProductoProvider = ({ children }) => {
   // obtenemos las listas de productos ordenadas por fechas (la más nueva es index 0)
   const getListas = async () => {
     const collRef = collection(db, "listasProductos");
+    console.log(collRef);
     let listasTempOrdenadas;
     let listasTemp;
     await getDocs(collRef)
@@ -44,19 +51,23 @@ const ProductoProvider = ({ children }) => {
   };
 
   // obtenemos los productos de la lista más nueva
-  const getProductos = async () => {
+  const getProductos = async (page = 5) => {
     // getLists
     const listasOrdenadas = await getListas();
-    console.log(`listasOrdenadas => `, listasOrdenadas);
+    //console.log(`listasOrdenadas => `, listasOrdenadas);
     // getImgsUrl
     const imgUrls = await getImgsUrl();
-    console.log("imgUrls => ", imgUrls);
+    //console.log("imgUrls => ", imgUrls);
     // getProductos de la lista más actual
     const subCollRef = collection(listasOrdenadas[0].docRef, "productos");
+    //console.log(subCollRef)
     getDocs(subCollRef)
       .then((querySnapshot) => {
+        //console.log(querySnapshot.data())
+        console.log(page);
         if (!querySnapshot.empty) {
-          const productosTemp = querySnapshot.docs.map((docSnapshot) => {
+          const newList = querySnapshot.docs.slice(0,page);
+          const productosTemp = newList.map((docSnapshot) => {
             const docData = docSnapshot.data();
             const codigo = docData.CODIGO.replaceAll("-", "");
             const imgUrl = imgUrls.find((obj) => obj.imgName === codigo)
@@ -66,7 +77,7 @@ const ProductoProvider = ({ children }) => {
             return { docId: docSnapshot.id, imgUrl, ...docData };
           });
           setProductos(productosTemp);
-          console.log(`productosTemp => `, productosTemp);
+          //console.log(`productosTemp => `, productosTemp);
         } else {
           setProductos([]);
         }
@@ -172,9 +183,9 @@ const ProductoProvider = ({ children }) => {
   // use memo
   const productosMemo = useMemo(() => getProductos(), []);
 
-//   useEffect(() => {
-//     productosMemo();
-//   }, []);
+  //   useEffect(() => {
+  //     productosMemo();
+  //   }, []);
 
   return (
     <ProductContext.Provider value={{ listas, productos }}>
