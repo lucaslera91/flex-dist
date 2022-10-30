@@ -82,8 +82,8 @@ function Buscador({classes}) {
 
             <ListGroup ref={listGroupRef} bsPrefix={`resultsListGroup ${(show) ? 'd-block' : 'd-none'}`}>
                 {results.length > 0 && results.map(item => {
-                return <ListGroup.Item key={item.docId}>
-                    <Link to={'/detalle-producto'} state={{ itemId: item.docId }} onClick={() => setShow(false)}> {item.NOMBRE} </Link>
+                return <ListGroup.Item className='buscador_contenedor' key={item.docId}>
+                    <Link className="buscador_item" to={'/detalle-producto'} state={{ itemId: item.docId }} onClick={() => setShow(false)}> {item.NOMBRE} </Link>
                 </ListGroup.Item>
                 })}          
             </ListGroup>

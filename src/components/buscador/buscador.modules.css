@@ -1,14 +1,25 @@
 .resultsListGroup {
-    position: absolute;
-    top: 100%;
-    left: 0px;
-    width: 100%;
-    height: 250px;
-    overflow: auto;
+  position: absolute;
+  top: 100%;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  overflow: auto;
+  border-radius: 0px 0px 16px 16px;
+  border-bottom: 1px solid rgb(130, 130, 130, 0.5);
+  border-left: 1px solid rgb(130, 130, 130, 0.5);
+  border-right: 1px solid rgba(130, 130, 130, 0.5);
 }
 .buscador {
-    position: relative;
+  position: relative;
 }
 .disabledLink {
-    pointer-events: none;
+  pointer-events: none;
+}
+.buscador_contenedor {
+}
+.buscador_item {
+  text-decoration: none;
+  color: rgb(130, 130, 130);
 }
