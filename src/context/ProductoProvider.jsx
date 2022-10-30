@@ -1,166 +1,186 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { getDocs, collection, doc } from 'firebase/firestore'
-import { ref, listAll, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../firebase/firebase'
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
+import { getDocs, collection, doc } from "firebase/firestore";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { db, storage } from "../firebase/firebase";
 
 const ProductContext = createContext();
 
 export const ProductConsumer = () => useContext(ProductContext);
 
 const ProductoProvider = ({ children }) => {
+  const [listas, setListas] = useState([]);
+  const [productos, setProductos] = useState([]);
+  const [imgUrls, setImgUrls] = useState([]);
 
-const [listas, setListas] = useState([])
-const [productos, setProductos] = useState([])
-const [imgUrls, setImgUrls] = useState([])
-
-// obtenemos las listas de productos ordenadas por fechas (la más nueva es index 0)
-const getListas = async () => {
-    const collRef = collection(db, 'listasProductos')
-    let listasTempOrdenadas
-    let listasTemp
+  // obtenemos las listas de productos ordenadas por fechas (la más nueva es index 0)
+  const getListas = async () => {
+    const collRef = collection(db, "listasProductos");
+    let listasTempOrdenadas;
+    let listasTemp;
     await getDocs(collRef)
-    .then((querySnapshot) => {
+      .then((querySnapshot) => {
         if (!querySnapshot.empty) {
-            listasTemp = querySnapshot.docs.map(docSnapshot => {return {id: docSnapshot.id, docRef: docSnapshot.ref, ...docSnapshot.data()}})
-            listasTempOrdenadas = listasTemp.sort((a, b) => {return ((new Date(b.creationTime).getTime()) - (new Date(a.creationTime).getTime()))})
-            setListas(listasTempOrdenadas)
-        } 
-        else {
-            listasTempOrdenadas = []
-            setListas(listasTempOrdenadas)
+          listasTemp = querySnapshot.docs.map((docSnapshot) => {
+            return {
+              id: docSnapshot.id,
+              docRef: docSnapshot.ref,
+              ...docSnapshot.data(),
+            };
+          });
+          listasTempOrdenadas = listasTemp.sort((a, b) => {
+            return (
+              new Date(b.creationTime).getTime() -
+              new Date(a.creationTime).getTime()
+            );
+          });
+          setListas(listasTempOrdenadas);
+        } else {
+          listasTempOrdenadas = [];
+          setListas(listasTempOrdenadas);
         }
-    })
-    .catch(error => console.log(`Hubo un error en getListas => ${error}`))
-    return listasTempOrdenadas
-}
+      })
+      .catch((error) => console.log(`Hubo un error en getListas => ${error}`));
+    return listasTempOrdenadas;
+  };
 
-// obtenemos los productos de la lista más nueva
-const getProductos = async () => {
-
+  // obtenemos los productos de la lista más nueva
+  const getProductos = async () => {
     // getLists
-    const listasOrdenadas = await getListas()
-    console.log(`listasOrdenadas => `, listasOrdenadas)
+    const listasOrdenadas = await getListas();
+    console.log(`listasOrdenadas => `, listasOrdenadas);
     // getImgsUrl
-    const imgUrls = await getImgsUrl()
-    console.log("imgUrls => ", imgUrls)
+    const imgUrls = await getImgsUrl();
+    console.log("imgUrls => ", imgUrls);
     // getProductos de la lista más actual
-    const subCollRef = collection(listasOrdenadas[0].docRef, 'productos')
+    const subCollRef = collection(listasOrdenadas[0].docRef, "productos");
     getDocs(subCollRef)
-    .then(querySnapshot => {
+      .then((querySnapshot) => {
         if (!querySnapshot.empty) {
-            const productosTemp = querySnapshot.docs.map(docSnapshot => {
-                const docData = docSnapshot.data()
-                const codigo = docData.CODIGO.replaceAll('-','')
-                const imgUrl = ((imgUrls.find(obj => obj.imgName === codigo) ? (imgUrls.find(obj => obj.imgName === codigo).url) : ""))
+          const productosTemp = querySnapshot.docs.map((docSnapshot) => {
+            const docData = docSnapshot.data();
+            const codigo = docData.CODIGO.replaceAll("-", "");
+            const imgUrl = imgUrls.find((obj) => obj.imgName === codigo)
+              ? imgUrls.find((obj) => obj.imgName === codigo).url
+              : "";
 
-                return {docId: docSnapshot.id, imgUrl, ...docData}
-            })
-            setProductos(productosTemp)
-            console.log(`productosTemp => `, productosTemp)
+            return { docId: docSnapshot.id, imgUrl, ...docData };
+          });
+          setProductos(productosTemp);
+          console.log(`productosTemp => `, productosTemp);
+        } else {
+          setProductos([]);
         }
-        else {
-            setProductos([])
-        }
-    })
-    .catch(error => console.log(`Hubo un error en getProductos => `,error))
-}
+      })
+      .catch((error) =>
+        console.log(`Hubo un error en getProductos => `, error)
+      );
+  };
 
-// obtenemos las url de las fotos
+  // obtenemos las url de las fotos
 
-    const getImgsUrl = async () => {
-        const telasRef = ref(storage, '/TELAS')
-        const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
-        let allRefs = []
+  const getImgsUrl = async () => {
+    const telasRef = ref(storage, "/TELAS");
+    const sistemasRef = ref(storage, "/SISTEMAS FOTOS");
+    let allRefs = [];
 
-        await listAll(telasRef)
-            .then(res => allRefs.push(...res.items))
-            .catch(error => console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`))
+    await listAll(telasRef)
+      .then((res) => allRefs.push(...res.items))
+      .catch((error) =>
+        console.log(
+          `Hubo un error obteniendo las ulr de las Telas: ${error.message}`
+        )
+      );
 
-        await listAll(sistemasRef)
-            .then(res => allRefs.push(...res.items))
-            .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+    await listAll(sistemasRef)
+      .then((res) => allRefs.push(...res.items))
+      .catch((error) =>
+        console.log(
+          `Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`
+        )
+      );
 
-        const imgUrlsTemp = await Promise.all(
-            allRefs.map(async ref => {
-                let url 
-                await getDownloadURL(ref).then(imgUrl => url = imgUrl).catch(error => console.log(`error obtniendo imgUrl => `, error))
-                let imgName = ref.name.slice(0,-4)
-                let obj = {imgName, url, ref}
-                return obj
-        }))
+    const imgUrlsTemp = await Promise.all(
+      allRefs.map(async (ref) => {
+        let url;
+        await getDownloadURL(ref)
+          .then((imgUrl) => (url = imgUrl))
+          .catch((error) => console.log(`error obtniendo imgUrl => `, error));
+        let imgName = ref.name.slice(0, -4);
+        let obj = { imgName, url, ref };
+        return obj;
+      })
+    );
 
-        return imgUrlsTemp
-    }
+    return imgUrlsTemp;
+  };
 
-    // const getImgsUrl = async () => {
-    //     const telasRef = ref(storage, '/TELAS')
-    //     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
-    //     let imgUrlsTemp = []
+  // const getImgsUrl = async () => {
+  //     const telasRef = ref(storage, '/TELAS')
+  //     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
+  //     let imgUrlsTemp = []
 
-    //     await listAll(telasRef)
-    //     .then(refs => {
-    //         imgUrlsTemp.push(...res.items)})
-    //     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
+  //     await listAll(telasRef)
+  //     .then(refs => {
+  //         imgUrlsTemp.push(...res.items)})
+  //     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
 
-    //     await listAll(sistemasRef)
-    //     .then(res => imgUrlsTemp.push(...res.items))
-    //     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+  //     await listAll(sistemasRef)
+  //     .then(res => imgUrlsTemp.push(...res.items))
+  //     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
 
-    //     setImgUrls(imgUrlsTemp)
+  //     setImgUrls(imgUrlsTemp)
 
-    //     return imgUrlsTemp
-    // }
+  //     return imgUrlsTemp
+  // }
 
-//     const getImgsUrl = async (categoria, nombre) => {
-//     const ref = ref(storage, `/${categoria}/${nombre}.jpg`)
-//     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
-//     let imgUrlsTemp = []
+  //     const getImgsUrl = async (categoria, nombre) => {
+  //     const ref = ref(storage, `/${categoria}/${nombre}.jpg`)
+  //     const sistemasRef = ref(storage, '/SISTEMAS FOTOS')
+  //     let imgUrlsTemp = []
 
-//     await listAll(telasRef)
-//     .then(res => {imgUrlsTemp.push(...res.items)})
-//     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
+  //     await listAll(telasRef)
+  //     .then(res => {imgUrlsTemp.push(...res.items)})
+  //     .catch(error => {console.log(`Hubo un error obteniendo las ulr de las Telas: ${error.message}`)})
 
-//     await listAll(sistemasRef)
-//     .then(res => imgUrlsTemp.push(...res.items))
-//     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
+  //     await listAll(sistemasRef)
+  //     .then(res => imgUrlsTemp.push(...res.items))
+  //     .catch(error => console.log(`Hubo un error obteniendo las ulr de los Sistemas: ${error.message}`))
 
-//     setImgUrls(imgUrlsTemp)
+  //     setImgUrls(imgUrlsTemp)
 
-//     return imgUrlsTemp
-// }
+  //     return imgUrlsTemp
+  // }
 
+  // const getAllRefFromFolder = (e) => {
+  //     e.preventDefault()
+  //     const folderRef = ref(storage, '/fotos')
+  //     listAll(folderRef)
+  //     .then(res => {
+  //         res.items.forEach(itemRef => {
+  //             getDownloadURL(itemRef)
+  //             .then(url => {
+  //                 console.log("downloadUrl => ", url)
+  //                 setImgUrl(url)
+  //                 imgRef.current.src=url
+  //                 console.log(imgRef.current)
+  //             })
+  //             .catch(error => console.log("Error => ", error))
+  //         })
+  //     })
+  //     .catch(error => console.log("Error => ", error))
+  // }
+  // use memo
+  const productosMemo = useMemo(() => getProductos(), []);
 
-    // const getAllRefFromFolder = (e) => {
-    //     e.preventDefault()
-    //     const folderRef = ref(storage, '/fotos')
-    //     listAll(folderRef)
-    //     .then(res => {
-    //         res.items.forEach(itemRef => {
-    //             getDownloadURL(itemRef)
-    //             .then(url => {
-    //                 console.log("downloadUrl => ", url)
-    //                 setImgUrl(url)
-    //                 imgRef.current.src=url
-    //                 console.log(imgRef.current)
-    //             })
-    //             .catch(error => console.log("Error => ", error))
-    //         })
-    //     })
-    //     .catch(error => console.log("Error => ", error))
-    // } 
+//   useEffect(() => {
+//     productosMemo();
+//   }, []);
 
-useEffect(
-    () => {
-        getProductos()
-    }, []
-)
+  return (
+    <ProductContext.Provider value={{ listas, productos }}>
+      {children}
+    </ProductContext.Provider>
+  );
+};
 
-
-    return (
-        <ProductContext.Provider value={{ listas, productos }}>
-            {children}
-        </ProductContext.Provider>
-    )
-}
-
-export default ProductoProvider
+export default ProductoProvider;
