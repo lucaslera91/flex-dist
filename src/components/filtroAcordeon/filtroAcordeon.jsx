@@ -28,7 +28,7 @@ const FiltroAcordeon = ({ titulo, handler, opciones }) => {
                         data-bs-parent="#accordionFlushExample">
                         <div className="accordion-body">
                             {opciones.map((element, idx) => {
-                                return <p onClick={(e) => handler(e)} key={idx}>{element}</p>
+                                return <p data-value={element} onClick={(e) => handler(e)} key={idx}>{element}</p>
                             })}
                         </div>
                     </div>

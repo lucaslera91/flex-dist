@@ -1,0 +1,6 @@
+.pillFilterText {
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
