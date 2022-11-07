@@ -117,7 +117,7 @@ const ListaProductosView = () => {
     return (
         <div>
 
-            <FiltroAcordeon titulo="Categorias" handler={handleSelectFilter} opciones={opciones}/>
+            <FiltroAcordeon titulo="Categorias" handler={handleSelectFilter} opciones={opciones} selectedFilters={selectedFilters}/>
             
             { (queryResults && queryString) && <Pill text={queryString} closeHandler={handleClearBusqueda}/> }    
             { (selectedFilters) && selectedFilters.map((elem, index) => <Pill key={index} value={elem} text={elem} closeHandler={handleDeleteFilter}/>)  }

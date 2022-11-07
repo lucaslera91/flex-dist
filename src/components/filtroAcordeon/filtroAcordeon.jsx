@@ -1,8 +1,8 @@
 import React from 'react'
 import './filtroAcordeon.css'
 
-const FiltroAcordeon = ({ titulo, handler, opciones }) => {
-
+const FiltroAcordeon = ({ titulo, handler, opciones, selectedFilters }) => {
+    console.log("selectedFilters en filtroAccordeon => ", selectedFilters)
     return (
         <div>
             <div className="accordion">
@@ -28,7 +28,9 @@ const FiltroAcordeon = ({ titulo, handler, opciones }) => {
                         data-bs-parent="#accordionFlushExample">
                         <div className="accordion-body">
                             {opciones.map((element, idx) => {
-                                return <p data-value={element} onClick={(e) => handler(e)} key={idx}>{element}</p>
+                                return <p data-value={element} className={
+                                    `accordion-item-options ${selectedFilters.includes(element) ? `disabledOption` : ' '}`}  
+                                    onClick={(e) => handler(e)} key={idx}>{element}</p>
                             })}
                         </div>
                     </div>

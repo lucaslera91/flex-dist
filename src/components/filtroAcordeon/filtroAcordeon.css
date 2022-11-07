@@ -16,3 +16,12 @@
 .accordion-header{
     color: var(--acordion-text-active-color);
 }
+
+.accordion-item-options {
+    cursor: pointer;
+}
+
+.disabledOption {
+    pointer-events: none;
+    color: #626d6d;
+}
