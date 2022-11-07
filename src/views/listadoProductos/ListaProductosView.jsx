@@ -25,11 +25,6 @@ const ListaProductosView = () => {
         queryString = location.state.queryString
     }    
 
-
-
-
-
-
     // console.log("Length => ", itemsToShow.length)
     // console.log("Productos => ", productos)
     // console.log("location => ", location)
@@ -59,10 +54,9 @@ const ListaProductosView = () => {
         let elegido = e.target.dataset.value
         console.log('elegido ', elegido)
         const _selectedFilters = [...selectedFilters]
-        console.log("_selectedFilters  ", _selectedFilters)
         _selectedFilters.push(elegido)
         setSelectedFilters(_selectedFilters)
-        console.log("_selectedFilters  ", _selectedFilters)
+        console.log("_selectedFilters en handleSelectFilters ", _selectedFilters)
     }
 
     const handleDeleteFilter = (e) => {
@@ -73,7 +67,7 @@ const ListaProductosView = () => {
         const index = _selectedFilters.indexOf(elegido)
         _selectedFilters.splice(index, 1)
         setSelectedFilters(_selectedFilters)
-        console.log("_selectedFilters  ", _selectedFilters)
+        console.log("_selectedFilters en handledeleteFilters ", _selectedFilters)
     }
 
     const handleClearBusqueda = () => {
@@ -96,7 +90,7 @@ const ListaProductosView = () => {
                     })
                 :   _itemsToShow = [...queryResults]
         }
-        else if(selectedFilters > 0){
+        else if(selectedFilters.length > 0){
             console.log("entró en 2do if")
             selectedFilters.forEach(filter => {
                 _itemsToShow = [..._itemsToShow, ...productos.filter(item => item.categoria === filter)]
@@ -108,6 +102,7 @@ const ListaProductosView = () => {
         }
         
         setItemsToShow(_itemsToShow)
+        console.log("_itemsToShow en useEffect ", _itemsToShow)
 
     }, [queryResults, productos, selectedFilters])
 
@@ -116,13 +111,18 @@ const ListaProductosView = () => {
 
     return (
         <div>
-
-            <FiltroAcordeon titulo="Categorias" handler={handleSelectFilter} opciones={opciones} selectedFilters={selectedFilters}/>
+            <div className='row'>
+                <div className='col-12 col-md-3 pt-3 containerFiltroAcordeon'>
+                    <FiltroAcordeon titulo="Categorias" handler={handleSelectFilter} opciones={opciones} selectedFilters={selectedFilters}/>
+                    
+                    { (queryResults && queryString) && <Pill text={queryString} closeHandler={handleClearBusqueda}/> }    
+                    { (selectedFilters) && selectedFilters.map((elem, index) => <Pill key={index} value={elem} text={elem} closeHandler={handleDeleteFilter}/>)  }
+                </div>
+                <div className='col-12 col-md-9'>
+                    <ListaProductos itemsToShow={itemsToShow} queryString={queryString}/>
+                </div>
+            </div>
             
-            { (queryResults && queryString) && <Pill text={queryString} closeHandler={handleClearBusqueda}/> }    
-            { (selectedFilters) && selectedFilters.map((elem, index) => <Pill key={index} value={elem} text={elem} closeHandler={handleDeleteFilter}/>)  }
-            
-            <ListaProductos itemsToShow={itemsToShow} queryString={queryString}/>
 
         </div>
     )
