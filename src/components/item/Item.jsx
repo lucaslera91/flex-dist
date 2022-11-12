@@ -21,11 +21,11 @@ const Item = ({ producto }) => {
                     <img src={producto.imgUrl} alt="No se encontro imagen" />
                 </div>
                 <div className='col-7'>
-                    <h5>Nombre: {producto.NOMBRE}</h5>
-                    <p>Descripción: {producto.DESCRIPCIÓN}</p>
+                    <h5>{producto.NOMBRE}</h5>
+                    <p>{producto.DESCRIPCIÓN}</p>
                     <div>
-                        <p>Color: {producto.COLOR}</p>
-                        <p>Categoría: {producto.categoria}</p>
+                        <p>{producto.COLOR}</p>
+                        <p>Categorías: {producto.categoria}</p>
 
                     </div>
                 </div>

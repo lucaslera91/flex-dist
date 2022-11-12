@@ -1,7 +1,7 @@
 :root {
     --ventana-bg-color: #FFFFFF;
     --ventana-text-color: #000000;
-    --ventana-text-active-color: #D5A322;
+    /* --ventana-text-active-color: #d5a222; */
     --ventana-text-hover-color: whitesmoke;
 }
 .main-ventana{
@@ -10,10 +10,16 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    margin: 20px;
+    border: 1px solid rgba(172, 171, 171, 0.193);
+    box-shadow: 10px 5px 5px rgb(172, 171, 171);
+    border-radius: 16px;
 }
 .ventana-msj{
     /* transform:rotate(45deg); */
     background-color: var(--ventana-text-active-color);
+    
+    padding: 0px 25px 0px 25px;
 }
 .new-box{
     height: 50vw;
@@ -28,4 +34,7 @@
     align-items: center;
   
 
+}
+.tituloAnuncio{
+    border-bottom: 1px solid #d5a222 ;
 }

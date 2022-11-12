@@ -1,8 +1,8 @@
 .main-home-container{
     min-height: 95vh;
-    overflow: hidden;
-    
+    overflow: hidden;   
 }
+
 .fade-in-section {
     opacity: 0;
     transform: translateY(20vh);

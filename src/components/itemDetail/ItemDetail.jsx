@@ -21,7 +21,7 @@ const ItemDetail = () => {
             { itemId ?
             <div className='main-detail-div'>
                 <div className='detail-img'>
-                    <img src={item.FOTO} alt="No se encontro imagen" />
+                    <img src={item.imgUrl} alt="No se encontro imagen" />
                 </div>
                 <div className='text-detail'>
                     <div className='datos-principales-SKU'>
@@ -29,9 +29,9 @@ const ItemDetail = () => {
                         <p>{item.DESCPRIPCIÓN}</p>
                     </div>
                     <div className='detalles-SKU'>
-                        <p>Categoria: "..."</p>
+                        <p>Categoria: {item.categoria}</p>
                         <p>SKU: {item.CODIGO}</p>
-                        <p>Dimesiones: "..."</p>
+                        {/* <p>Dimesiones: ""</p> */}
                         <p>Color:{item.COLOR}</p>
                     </div>
                 </div>

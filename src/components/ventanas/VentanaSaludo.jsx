@@ -5,7 +5,7 @@ const VentanaSaludo = ({ parametroDeAnuncio, textoExplicativo }) => {
         <div className='main-ventana'>
             <div className='ventana-msj'>
                 <div className='new-box'>
-                    <h3>{parametroDeAnuncio}</h3>
+                    <h3 className='tituloAnuncio'>{parametroDeAnuncio}</h3>
                     <p>{textoExplicativo}</p>
                 </div>
             </div>
